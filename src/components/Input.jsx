@@ -29,6 +29,8 @@ function MemoInput({ createMemoSync }) {
     try {
       const createData = await createMemo(newMemo);
       createMemoSync(createData);
+      setTitleMemo('');
+      setContentMemo('');
     } catch (error) {
       console.error('저장 실패:', error);
     }
