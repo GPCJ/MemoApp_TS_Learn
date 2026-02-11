@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { createMemo } from '../api/memos';
 
-function MemoInput({ createMemo, setMemos }) {
+function MemoInput({ createMemoSync }) {
   const [titleMemo, setTitleMemo] = useState('');
   const [contentMemo, setContentMemo] = useState('');
   // const [isError, setIsError] = useState(false);
@@ -9,6 +10,7 @@ function MemoInput({ createMemo, setMemos }) {
     const trimmedTitle = title.trim();
     const trimmedContent = content.trim();
 
+    // 빈 메모 검사
     if (trimmedTitle === '' || trimmedContent === '') {
       // setIsError(true);
       // 메모 공백 에러 메시지 필요
@@ -16,6 +18,8 @@ function MemoInput({ createMemo, setMemos }) {
       return;
     }
     // setIsError(false);
+
+    // 요청 형식에 맞게 객체화
     const newMemo = {
       title: trimmedTitle,
       content: trimmedContent,
@@ -23,7 +27,8 @@ function MemoInput({ createMemo, setMemos }) {
     };
 
     try {
-      await createMemo(newMemo);
+      const createData = await createMemo(newMemo);
+      createMemoSync(createData);
     } catch (error) {
       console.error('저장 실패:', error);
     }

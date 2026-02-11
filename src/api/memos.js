@@ -9,7 +9,6 @@ export const getMemos = async (params = {}) => {
 
 // 생성
 export const createMemo = async (payload) => {
-  console.log(payload);
   const response = await client.post('/memos', payload);
   return response.data;
 };

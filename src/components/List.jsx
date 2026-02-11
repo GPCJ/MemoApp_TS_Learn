@@ -1,4 +1,6 @@
-function MemoList({ memos, setMemos, deleteMemo }) {
+import { deleteMemo } from '../api/memos';
+
+function MemoList({ memos, deleteMemoSync }) {
   return (
     <div className="grid gap-4">
       {memos.length === 0 ? (
@@ -21,9 +23,7 @@ function MemoList({ memos, setMemos, deleteMemo }) {
               <button
                 onClick={() => {
                   deleteMemo(memo.id);
-                  setMemos((prev) =>
-                    prev.filter((prevMemo) => prevMemo.id !== memo.id),
-                  );
+                  deleteMemoSync(memo.id);
                 }}
                 className="text-gray-400 hover:text-red-500 transition-colors text-sm"
               >
