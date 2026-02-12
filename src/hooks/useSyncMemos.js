@@ -1,8 +1,8 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { getMemos } from '../api/memos';
 
 // CRUD 통합 동기화
-export const useMemos = () => {
+export const useSyncMemos = () => {
   const [memos, setMemos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +17,7 @@ export const useMemos = () => {
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1000);
+      }, 500);
     }
   };
 

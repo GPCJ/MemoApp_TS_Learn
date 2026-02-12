@@ -4,20 +4,17 @@ import { createMemo } from '../api/memos';
 function MemoInput({ createMemoSync }) {
   const [titleMemo, setTitleMemo] = useState('');
   const [contentMemo, setContentMemo] = useState('');
-  // const [isError, setIsError] = useState(false);
+  const [isNull, setIsNull] = useState(false);
 
   const handleMemo = async (title, content) => {
     const trimmedTitle = title.trim();
     const trimmedContent = content.trim();
 
-    // 빈 메모 검사
+    // 서버에 Create요청 보내고 로컬에 동기화 하기 전에 입력 값은 검사해서 빈 값이면 사용자에게 알림
     if (trimmedTitle === '' || trimmedContent === '') {
-      // setIsError(true);
-      // 메모 공백 에러 메시지 필요
-      // useEffect써서 isError가 바뀌면 에러 메시지 컴포넌트 호출하는 방식 좋아보임
+      setIsNull(true);
       return;
     }
-    // setIsError(false);
 
     // 요청 형식에 맞게 객체화
     const newMemo = {
@@ -37,19 +34,36 @@ function MemoInput({ createMemoSync }) {
   };
 
   return (
-    <div className="bg-[#1E1E1E] p-6 rounded-xl shadow-md mb-8">
+    <section className="bg-[#1E1E1E] p-6 rounded-xl shadow-md mb-8">
+      <h2 className="text-center text-white mb-2">새 메모 작성</h2>
       <p className="text-left text-white mb-2">제목</p>
       <input
-        className="w-full p-4 mb-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder-neutral-500 text-white"
+        className={`w-full p-4 mb-4 border rounded-lg focus:ring-2 focus:border-transparent outline-none transition-all pl text-white 
+          ${
+            isNull
+              ? 'border-red-500 placeholder-red-500 focus:ring-red-500'
+              : 'border-gray-200 placeholder-neutral-500 focus:ring-blue-500'
+          }`}
         value={titleMemo}
-        onChange={(e) => setTitleMemo(e.target.value)}
+        onChange={(e) => {
+          setTitleMemo(e.target.value);
+          setIsNull(false); // 입력 시작 시 빈 값 에러 OFF
+        }}
         placeholder="제목을 입력해주세요."
       />
       <p className="text-left text-white mb-2">내용</p>
       <textarea
-        className="w-full h-32 p-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none placeholder-neutral-500 text-white"
+        className={`w-full h-32 p-4 border  rounded-lg focus:ring-2  focus:border-transparent outline-none transition-all resize-none  text-white
+          ${
+            isNull
+              ? 'border-red-500 placeholder-red-500 focus:ring-red-500'
+              : 'border-gray-200 placeholder-neutral-500 focus:ring-blue-500'
+          }`}
         value={contentMemo}
-        onChange={(e) => setContentMemo(e.target.value)}
+        onChange={(e) => {
+          setContentMemo(e.target.value);
+          setIsNull(false);
+        }}
         placeholder="내용을 입력해주세요."
       />
       <div className="flex justify-end mt-4">
@@ -60,7 +74,7 @@ function MemoInput({ createMemoSync }) {
           메모 추가
         </button>
       </div>
-    </div>
+    </section>
   );
 }
 
