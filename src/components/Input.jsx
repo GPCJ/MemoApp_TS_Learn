@@ -34,7 +34,7 @@ function MemoInput({ createMemoSync }) {
   };
 
   return (
-    <section className="bg-[#1E1E1E] p-6 rounded-xl shadow-md mb-8">
+    <section className="bg-[#1c1c1c] p-6 rounded-xl shadow-md mb-5">
       <h2 className="text-center text-white mb-2">새 메모 작성</h2>
       <p className="text-left text-white mb-2">제목</p>
       <input

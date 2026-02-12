@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+// 컴포넌트 불러오기
 import {
   Header,
   MemoInput,
+  SelectMemo,
   MemoList,
   Loading,
   ErrorMessage,
@@ -11,11 +13,12 @@ import {
 import { useSyncMemos } from './hooks/useSyncMemos';
 
 const MemoMain = () => {
+  // useSyncMemos Hook 상태, 함수
   const {
     memos,
-    setMemos,
     isLoading,
     isError,
+    isNull,
     createMemoSync,
     deleteMemoSync,
     updateMemoSync,
@@ -25,12 +28,14 @@ const MemoMain = () => {
   return (
     <div className="min-h-screen bg-[#2222] py-10 px-4">
       <div className="max-w-2xl mx-auto">
-        <Header fetchMemos={fetchMemos} setMemos={setMemos} />
+        <Header />
         <MemoInput createMemoSync={createMemoSync} />
-        {/* 만약 isLoading이 true면 로딩 UI 컴포넌트 렌더링 */}
+        <SelectMemo fetchMemos={fetchMemos} />
+
         {isLoading && <Loading />}
         {isError && <ErrorMessage fetchMemos={fetchMemos} />}
-        <NullMemos />
+        {isNull && <NullMemos />}
+
         <MemoList
           isError={isError}
           memos={memos}

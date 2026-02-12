@@ -9,14 +9,18 @@ export const useSyncMemos = () => {
   const [isNull, setIsNull] = useState(false);
 
   // 메모 불러오기
-  const fetchMemos = async () => {
-    setIsLoading(true);
+  const fetchMemos = async (searchQuery) => {
     try {
-      const memos = await getMemos();
-      if (memos.items.length === 0) {
+      setIsLoading(true);
+      const serverMemos = await getMemos(searchQuery);
+      const items = serverMemos.items;
+      setMemos(items);
+
+      if (items.length === 0) {
         setIsNull(true);
+      } else {
+        setIsNull(false);
       }
-      setMemos(memos.items);
       setIsError(false);
     } catch (error) {
       if (error.response && error.response.status === 500) setIsError(true);
@@ -44,9 +48,9 @@ export const useSyncMemos = () => {
 
   return {
     memos,
-    isNull,
     isLoading,
     isError,
+    isNull,
     createMemoSync,
     deleteMemoSync,
     updateMemoSync,
