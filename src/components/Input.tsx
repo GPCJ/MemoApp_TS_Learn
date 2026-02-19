@@ -1,22 +1,25 @@
 import { useState } from 'react';
 import { createMemo } from '../api/memos';
+import type { Memo } from '../types/memo';
 
-function MemoInput({ createMemoSync }) {
+interface MemoInputProps {
+  createMemoSync: (newMemo: Memo) => void;
+}
+
+function MemoInput({ createMemoSync }: MemoInputProps) {
   const [titleMemo, setTitleMemo] = useState('');
   const [contentMemo, setContentMemo] = useState('');
   const [isNull, setIsNull] = useState(false);
 
-  const handleMemo = async (title, content) => {
+  const handleMemo = async (title: string, content: string) => {
     const trimmedTitle = title.trim();
     const trimmedContent = content.trim();
 
-    // 서버에 Create요청 보내고 로컬에 동기화 하기 전에 입력 값은 검사해서 빈 값이면 사용자에게 알림
     if (trimmedTitle === '' || trimmedContent === '') {
       setIsNull(true);
       return;
     }
 
-    // 요청 형식에 맞게 객체화
     const newMemo = {
       title: trimmedTitle,
       content: trimmedContent,
@@ -47,7 +50,7 @@ function MemoInput({ createMemoSync }) {
         value={titleMemo}
         onChange={(e) => {
           setTitleMemo(e.target.value);
-          setIsNull(false); // 입력 시작 시 빈 값 에러 OFF
+          setIsNull(false);
         }}
         placeholder="제목을 입력해주세요."
       />

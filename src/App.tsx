@@ -1,6 +1,3 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-// 컴포넌트 불러오기
 import {
   Header,
   MemoInput,
@@ -11,14 +8,12 @@ import {
   EmptyMemos,
 } from './components/components-index';
 import { useSyncMemos } from './hooks/useSyncMemos';
+import './App.css';
 
 const MemoMain = () => {
-  // useSyncMemos Hook 상태, 함수
   const {
-    memos,
-    isLoading,
-    isError,
-    isEmpty,
+    // memos,
+    state,
     createMemoSync,
     deleteMemoSync,
     updateMemoSync,
@@ -32,13 +27,13 @@ const MemoMain = () => {
         <MemoInput createMemoSync={createMemoSync} />
         <SelectMemo fetchMemos={fetchMemos} />
 
-        {isLoading && <Loading />}
-        {isError && <ErrorMessage fetchMemos={fetchMemos} />}
-        {isEmpty && <EmptyMemos />}
+        {state.isLoading && <Loading />}
+        {state.isError && <ErrorMessage fetchMemos={fetchMemos} />}
+        {state.isEmpty && <EmptyMemos />}
 
         <MemoList
-          isError={isError}
-          memos={memos}
+          isError={state.isError}
+          // memos={memos}
           deleteMemoSync={deleteMemoSync}
           updateMemoSync={updateMemoSync}
         />

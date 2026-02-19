@@ -1,19 +1,26 @@
 import { useEffect, useState } from 'react';
 
-function SelectMemo({ fetchMemos }) {
+interface SelectMemoProps {
+  fetchMemos: (params?: { q?: string }) => void;
+}
+
+function SelectMemo({ fetchMemos }: SelectMemoProps) {
   const [inputValue, setInputValue] = useState('');
-  const [searchQuery, setSearchQuery] = useState(''); // 최종 검색어
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = () => {
     setSearchQuery(inputValue);
   };
+
   useEffect(() => {
+    if (searchQuery.trim() === '') {
+      return;
+    }
     fetchMemos({ q: searchQuery });
   }, [searchQuery]);
 
   return (
     <div className="relative w-full">
-      {/* 돋보기 아이콘 */}
       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
         <svg
           className="w-5 h-5 text-gray-400"
@@ -38,12 +45,12 @@ function SelectMemo({ fetchMemos }) {
           className="block w-full pl-10 pr-3 py-2.5 bg-[#3333] border border-gray-300 rounded-xl text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2
         focus:ring-blue-500/20 focus:border-blue-500 focus:bg-[#7777] transition-all shadow-sm"
           placeholder="어떤 메모를 찾으시나요?"
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch(inputValue)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
         <button
           className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-2xl 
         hover:bg-blue-700 active:scale-95 transition-all shadow-md whitespace-nowrap"
-          onClick={() => handleSearch(inputValue)}
+          onClick={handleSearch}
         >
           검색
         </button>

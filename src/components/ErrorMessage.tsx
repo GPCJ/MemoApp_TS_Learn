@@ -1,12 +1,9 @@
-import { getMemos } from '../api/memos';
+interface ErrorMessageProps {
+  fetchMemos: () => void;
+}
 
-function ErrorMessage({ fetchMemos }) {
+function ErrorMessage({ fetchMemos }: ErrorMessageProps) {
   const refetch = () => {
-    const firstPage = {
-      page: 1,
-      limit: 10,
-    };
-    getMemos(firstPage);
     fetchMemos();
   };
 
