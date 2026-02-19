@@ -27,9 +27,10 @@ const MemoMain = () => {
 
         <MemoList
           isError={state.isError}
-          memos={state.memoInfo}
+          memoInfo={state.memoInfo}
           deleteMemoSync={deleteMemoSync}
           updateMemoSync={updateMemoSync}
+          fetchMemos={fetchMemos}
         />
       </div>
     </div>

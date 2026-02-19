@@ -4,9 +4,10 @@ import type { Memo, MemoInfo } from '../types/memo';
 import { Pagination } from './components-index';
 
 interface MemoListProps {
-  memos: MemoInfo;
+  memoInfo: MemoInfo;
   deleteMemoSync: (id: number) => void;
   updateMemoSync: (memo: Memo) => void;
+  fetchMemos: (params: { page: number; limit?: 5 }) => void;
   isError: boolean;
 }
 
@@ -55,13 +56,21 @@ function editReducer(state: EditState, action: EditAction): EditState {
 }
 
 // 컴포넌트
-function MemoList({ memos, deleteMemoSync, updateMemoSync }: MemoListProps) {
+function MemoList({
+  memoInfo,
+  deleteMemoSync,
+  updateMemoSync,
+  fetchMemos,
+}: MemoListProps) {
   const [editState, dispatchEdit] = useReducer(editReducer, initialEditState);
   const inputRef = useRef<HTMLInputElement>(null);
   // const [page, setPage] = useState<number>(1); // 이 state 매번 1씩 증감
   // const [startIdex, setStartIdex] = useState<number>(0); // page state가 증감 될 때 마다 +-4 증감
 
-  console.log('(아마 페이지 정보가 없을듯)app에서 props로 받은 데이터:', memos);
+  console.log(
+    '(아마 페이지 정보가 없을듯)app에서 props로 받은 데이터:',
+    memoInfo,
+  );
 
   const isEditing = editState.memoId !== null;
 
@@ -112,7 +121,7 @@ function MemoList({ memos, deleteMemoSync, updateMemoSync }: MemoListProps) {
 
   return (
     <section className="grid gap-4">
-      {memos.map((memo) => (
+      {memoInfo.items.map((memo) => (
         <div
           key={memo.id}
           className="bg-[#3333] p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative group"
@@ -212,7 +221,7 @@ function MemoList({ memos, deleteMemoSync, updateMemoSync }: MemoListProps) {
           )}
         </div>
       ))}
-      <Pagination />
+      <Pagination memoInfo={memoInfo} fetchMemos={fetchMemos} />
     </section>
   );
 }
