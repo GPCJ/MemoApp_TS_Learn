@@ -14,9 +14,9 @@ type MemosAction =
   | { type: 'FETCH_SUCCESS'; payload: MemoInfo }
   | { type: 'FETCH_ERROR' }
   | { type: 'FETCH_END' }
-  | { type: 'CREATE_MEMO'; payload: MemoInfo } // 추가, 수정 메모 갱신 할 때도 페이지 정보 받아야 하나?
+  | { type: 'CREATE_MEMO'; payload: Memo } // 추가, 수정 메모 갱신 할 때도 페이지 정보 받아야 하나?
   | { type: 'DELETE_MEMO'; payload: number }
-  | { type: 'UPDATE_MEMO'; payload: MemoInfo };
+  | { type: 'UPDATE_MEMO'; payload: Memo };
 
 const initialState: MemosState = {
   memoInfo: { items: [], page: 1, limit: 5, total: 0, totalPages: 1 }, // MemoInfo의 형식에 맞는 초기값을 설정해야함
@@ -48,21 +48,35 @@ function memosReducer(state: MemosState, action: MemosAction): MemosState {
     case 'CREATE_MEMO':
       return {
         ...state,
-        memoInfo: [action.payload.items, ...state.memoInfo.items],
+        memoInfo: {
+          ...state.memoInfo,
+          items: [action.payload, ...state.memoInfo.items],
+        },
         isEmpty: false,
       };
     case 'DELETE_MEMO':
       return {
-        ...state,
-        memoInfo: state.memoInfo.items.filter((m) => m.id !== action.payload),
+        ...state, // 상태 전체 복사
+        memoInfo: {
+          ...state.memoInfo, // memoInfo 키 value 복사사
+          items: [
+            // memoInfo 키의 value중 items 키를 복사(items 키의 value는 배열)
+            ...state.memoInfo.items.filter((m) => m.id !== action.payload),
+          ],
+        },
         isEmpty: state.memoInfo.items.length <= 1,
       };
     case 'UPDATE_MEMO':
       return {
         ...state,
-        memoInfo: state.memoInfo.items.map((m) =>
-          m.id === action.payload.id ? action.payload : m,
-        ),
+        memoInfo: {
+          ...state.memoInfo,
+          items: [
+            ...state.memoInfo.items.map((m) =>
+              m.id === action.payload.id ? action.payload : m,
+            ),
+          ],
+        },
       };
     default:
       return state;
@@ -90,7 +104,7 @@ export const useSyncMemos = () => {
     fetchMemos();
   }, []);
 
-  const createMemoSync = useCallback((newMemo: MemoInfo) => {
+  const createMemoSync = useCallback((newMemo: Memo) => {
     dispatch({ type: 'CREATE_MEMO', payload: newMemo });
   }, []);
 
@@ -103,7 +117,6 @@ export const useSyncMemos = () => {
   }, []);
 
   return {
-    memos = state.memos,
     state, // state를 반환 하는 이유 : 메인 컴포넌트에서 state에 담긴 상태 UI boolean 값으로 UI ON/OFF를 판단해야 하기 때문에
     createMemoSync,
     deleteMemoSync,

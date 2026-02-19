@@ -1,10 +1,10 @@
-import { useState, useReducer, useRef, useEffect } from 'react';
+import { useReducer, useRef, useEffect } from 'react';
 import { updateMemo, deleteMemo } from '../api/memos';
-import type { Memo } from '../types/memo';
+import type { Memo, MemoInfo } from '../types/memo';
 import { Pagination } from './components-index';
 
 interface MemoListProps {
-  memos: Memo[];
+  memos: MemoInfo;
   deleteMemoSync: (id: number) => void;
   updateMemoSync: (memo: Memo) => void;
   isError: boolean;
@@ -110,111 +110,111 @@ function MemoList({ memos, deleteMemoSync, updateMemoSync }: MemoListProps) {
     return date.replace('T', ' ').slice(0, 16);
   };
 
-  // return (
-  //   <section className="grid gap-4">
-  //     {memos.map((memo) => (
-  //       <div
-  //         key={memo.id}
-  //         className="bg-[#3333] p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative group"
-  //       >
-  //         {isEditing && memo.id === editState.memoId ? (
-  //           <>
-  //             <input
-  //               value={editState.title}
-  //               onChange={(e) =>
-  //                 dispatchEdit({
-  //                   type: 'UPDATE_FIELD',
-  //                   field: 'title',
-  //                   value: e.target.value,
-  //                 })
-  //               }
-  //               onKeyDown={(e) => handleKeyDown(e, memo)}
-  //               ref={inputRef}
-  //               autoFocus
-  //               className={`w-full p-4 mb-4 border  rounded-lg focus:ring-2  focus:border-transparent outline-none transition-all  text-white
-  //                 ${
-  //                   editState.isNull
-  //                     ? 'border-red-500 placeholder-red-500 focus:ring-red-500'
-  //                     : 'border-gray-200 placeholder-neutral-500 focus:ring-blue-500'
-  //                 }`}
-  //               placeholder="제목을 입력해주세요."
-  //             />
-  //             <textarea
-  //               value={editState.content}
-  //               onChange={(e) =>
-  //                 dispatchEdit({
-  //                   type: 'UPDATE_FIELD',
-  //                   field: 'content',
-  //                   value: e.target.value,
-  //                 })
-  //               }
-  //               onKeyDown={(e) => handleKeyDown(e, memo)}
-  //               className={`w-full h-32 p-4 border  rounded-lg focus:ring-2  focus:border-transparent outline-none transition-all resize-none text-white
-  //                 ${
-  //                   editState.isNull
-  //                     ? 'border-red-500 placeholder-red-500 focus:ring-red-500'
-  //                     : 'border-gray-200 placeholder-neutral-500 focus:ring-blue-500'
-  //                 }`}
-  //               placeholder="내용을 입력해주세요."
-  //             />
-  //             <div className="mt-3 flex justify-between items-center">
-  //               <span className="text-xs text-white font-medium mr-auto">
-  //                 {`생성: ${formatDate(memo.updatedAt)}`}
-  //               </span>
-  //               <button
-  //                 onClick={() => handleUpdate(memo)}
-  //                 className="text-white hover:bg-gray-500 rounded transition-colors text-sm p-2 "
-  //               >
-  //                 확인
-  //               </button>
-  //               <button
-  //                 onClick={() => {
-  //                   deleteMemo(memo.id);
-  //                   deleteMemoSync(memo.id);
-  //                 }}
-  //                 className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
-  //               >
-  //                 삭제
-  //               </button>
-  //             </div>
-  //           </>
-  //         ) : (
-  //           <>
-  //             <p className="text-white whitespace-pre-wrap pr-8">
-  //               제목: {memo.title}
-  //             </p>
-  //             <p className="text-white whitespace-pre-wrap pr-8 my-5">
-  //               내용: {memo.content}
-  //             </p>
-  //             <div className="mt-3 flex justify-between items-center">
-  //               <span className="text-xs text-white font-medium mr-auto">
-  //                 {`생성: ${formatDate(memo.createdAt)}`}
-  //               </span>
-  //               <button
-  //                 onClick={() =>
-  //                   dispatchEdit({ type: 'START_EDIT', payload: memo })
-  //                 }
-  //                 className="text-white hover:bg-blue-500 rounded transition-colors text-sm p-2 "
-  //               >
-  //                 수정
-  //               </button>
-  //               <button
-  //                 onClick={() => {
-  //                   deleteMemo(memo.id);
-  //                   deleteMemoSync(memo.id);
-  //                 }}
-  //                 className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
-  //               >
-  //                 삭제
-  //               </button>
-  //             </div>
-  //           </>
-  //         )}
-  //       </div>
-  //     ))}
-  //     {/* <Pagination /> */}
-  //   </section>
-  // );
+  return (
+    <section className="grid gap-4">
+      {memos.map((memo) => (
+        <div
+          key={memo.id}
+          className="bg-[#3333] p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative group"
+        >
+          {isEditing && memo.id === editState.memoId ? (
+            <>
+              <input
+                value={editState.title}
+                onChange={(e) =>
+                  dispatchEdit({
+                    type: 'UPDATE_FIELD',
+                    field: 'title',
+                    value: e.target.value,
+                  })
+                }
+                onKeyDown={(e) => handleKeyDown(e, memo)}
+                ref={inputRef}
+                autoFocus
+                className={`w-full p-4 mb-4 border  rounded-lg focus:ring-2  focus:border-transparent outline-none transition-all  text-white
+                  ${
+                    editState.isNull
+                      ? 'border-red-500 placeholder-red-500 focus:ring-red-500'
+                      : 'border-gray-200 placeholder-neutral-500 focus:ring-blue-500'
+                  }`}
+                placeholder="제목을 입력해주세요."
+              />
+              <textarea
+                value={editState.content}
+                onChange={(e) =>
+                  dispatchEdit({
+                    type: 'UPDATE_FIELD',
+                    field: 'content',
+                    value: e.target.value,
+                  })
+                }
+                onKeyDown={(e) => handleKeyDown(e, memo)}
+                className={`w-full h-32 p-4 border  rounded-lg focus:ring-2  focus:border-transparent outline-none transition-all resize-none text-white
+                  ${
+                    editState.isNull
+                      ? 'border-red-500 placeholder-red-500 focus:ring-red-500'
+                      : 'border-gray-200 placeholder-neutral-500 focus:ring-blue-500'
+                  }`}
+                placeholder="내용을 입력해주세요."
+              />
+              <div className="mt-3 flex justify-between items-center">
+                <span className="text-xs text-white font-medium mr-auto">
+                  {`생성: ${formatDate(memo.updatedAt)}`}
+                </span>
+                <button
+                  onClick={() => handleUpdate(memo)}
+                  className="text-white hover:bg-gray-500 rounded transition-colors text-sm p-2 "
+                >
+                  확인
+                </button>
+                <button
+                  onClick={() => {
+                    deleteMemo(memo.id);
+                    deleteMemoSync(memo.id);
+                  }}
+                  className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
+                >
+                  삭제
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-white whitespace-pre-wrap pr-8">
+                제목: {memo.title}
+              </p>
+              <p className="text-white whitespace-pre-wrap pr-8 my-5">
+                내용: {memo.content}
+              </p>
+              <div className="mt-3 flex justify-between items-center">
+                <span className="text-xs text-white font-medium mr-auto">
+                  {`생성: ${formatDate(memo.createdAt)}`}
+                </span>
+                <button
+                  onClick={() =>
+                    dispatchEdit({ type: 'START_EDIT', payload: memo })
+                  }
+                  className="text-white hover:bg-blue-500 rounded transition-colors text-sm p-2 "
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => {
+                    deleteMemo(memo.id);
+                    deleteMemoSync(memo.id);
+                  }}
+                  className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
+                >
+                  삭제
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+      <Pagination />
+    </section>
+  );
 }
 
 export default MemoList;

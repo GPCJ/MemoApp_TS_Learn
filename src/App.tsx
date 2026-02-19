@@ -11,14 +11,8 @@ import { useSyncMemos } from './hooks/useSyncMemos';
 import './App.css';
 
 const MemoMain = () => {
-  const {
-    // memos,
-    state,
-    createMemoSync,
-    deleteMemoSync,
-    updateMemoSync,
-    fetchMemos,
-  } = useSyncMemos();
+  const { state, createMemoSync, deleteMemoSync, updateMemoSync, fetchMemos } =
+    useSyncMemos();
 
   return (
     <div className="min-h-screen bg-[#2222] py-10 px-4">
@@ -33,7 +27,7 @@ const MemoMain = () => {
 
         <MemoList
           isError={state.isError}
-          // memos={memos}
+          memos={state.memoInfo}
           deleteMemoSync={deleteMemoSync}
           updateMemoSync={updateMemoSync}
         />
