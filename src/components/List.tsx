@@ -1,14 +1,11 @@
 import { useReducer, useRef, useEffect } from 'react';
 import { updateMemo, deleteMemo } from '../api/memos';
 import type { Memo, MemoInfo } from '../types/memo';
-import { Pagination } from './components-index';
 
 interface MemoListProps {
   memoInfo: MemoInfo;
   deleteMemoSync: (id: number) => void;
   updateMemoSync: (memo: Memo) => void;
-  fetchMemos: (params: { page: number; limit?: 5 }) => void;
-  isError: boolean;
 }
 
 interface EditState {
@@ -56,22 +53,9 @@ function editReducer(state: EditState, action: EditAction): EditState {
 }
 
 // 컴포넌트
-function MemoList({
-  memoInfo,
-  deleteMemoSync,
-  updateMemoSync,
-  fetchMemos,
-}: MemoListProps) {
+function MemoList({ memoInfo, deleteMemoSync, updateMemoSync }: MemoListProps) {
   const [editState, dispatchEdit] = useReducer(editReducer, initialEditState);
   const inputRef = useRef<HTMLInputElement>(null);
-  // const [page, setPage] = useState<number>(1); // 이 state 매번 1씩 증감
-  // const [startIdex, setStartIdex] = useState<number>(0); // page state가 증감 될 때 마다 +-4 증감
-
-  console.log(
-    '(아마 페이지 정보가 없을듯)app에서 props로 받은 데이터:',
-    memoInfo,
-  );
-
   const isEditing = editState.memoId !== null;
 
   const handleKeyDown = (e: React.KeyboardEvent, memo: Memo) => {
@@ -121,7 +105,7 @@ function MemoList({
 
   return (
     <section className="grid gap-4">
-      {memoInfo.items.map((memo) => (
+      {memoInfo.items.slice(0, 5).map((memo) => (
         <div
           key={memo.id}
           className="bg-[#3333] p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative group"
@@ -221,7 +205,6 @@ function MemoList({
           )}
         </div>
       ))}
-      <Pagination memoInfo={memoInfo} fetchMemos={fetchMemos} />
     </section>
   );
 }

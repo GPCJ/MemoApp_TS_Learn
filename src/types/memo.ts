@@ -26,14 +26,19 @@ export interface MemoUpdatePayload {
   tags?: string[];
 }
 
-// export interface MemosResponse {
-//   items: Memo[];
-//   total?: number;
-// }
+export interface MemosResponse {
+  items: Memo[];
+  total?: number;
+}
 
 export interface MemoSearchParams {
   page?: number;
-  limit?: number;
+  limit?: 5;
   q?: string;
   fail?: string;
+}
+
+export interface MemoPaginationContext {
+  memoInfo: MemoInfo;
+  fetchMemos: (params: { page: number; limit: 5 }) => void;
 }

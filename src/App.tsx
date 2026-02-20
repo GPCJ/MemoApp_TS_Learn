@@ -6,6 +6,7 @@ import {
   Loading,
   ErrorMessage,
   EmptyMemos,
+  Pagination,
 } from './components/components-index';
 import { useSyncMemos } from './hooks/useSyncMemos';
 import './App.css';
@@ -26,12 +27,12 @@ const MemoMain = () => {
         {state.isEmpty && <EmptyMemos />}
 
         <MemoList
-          isError={state.isError}
           memoInfo={state.memoInfo}
           deleteMemoSync={deleteMemoSync}
           updateMemoSync={updateMemoSync}
-          fetchMemos={fetchMemos}
         />
+
+        <Pagination memoInfo={state.memoInfo} fetchMemos={fetchMemos} />
       </div>
     </div>
   );

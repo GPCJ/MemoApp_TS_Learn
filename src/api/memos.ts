@@ -3,16 +3,15 @@ import type {
   Memo,
   MemoCreatePayload,
   MemoUpdatePayload,
-  // MemosResponse,
+  MemoInfo,
   MemoSearchParams,
 } from '../types/memo';
 
 // 목록 조회 / 에러 파라미터( fail: '1' )
 export const getMemos = async (
   params: MemoSearchParams = { page: 1, limit: 5 },
-): Promise<MemosResponse> => {
-  const response = await client.get<MemosResponse>('/memos', { params });
-  console.log(response);
+): Promise<MemoInfo> => {
+  const response = await client.get<MemoInfo>('/memos', { params });
   return response.data;
 };
 

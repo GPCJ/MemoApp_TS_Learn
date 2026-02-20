@@ -14,12 +14,12 @@ type MemosAction =
   | { type: 'FETCH_SUCCESS'; payload: MemoInfo }
   | { type: 'FETCH_ERROR' }
   | { type: 'FETCH_END' }
-  | { type: 'CREATE_MEMO'; payload: Memo } // 추가, 수정 메모 갱신 할 때도 페이지 정보 받아야 하나?
+  | { type: 'CREATE_MEMO'; payload: Memo }
   | { type: 'DELETE_MEMO'; payload: number }
   | { type: 'UPDATE_MEMO'; payload: Memo };
 
 const initialState: MemosState = {
-  memoInfo: { items: [], page: 1, limit: 5, total: 0, totalPages: 1 }, // MemoInfo의 형식에 맞는 초기값을 설정해야함
+  memoInfo: { items: [], page: 1, limit: 5, total: 0, totalPages: 1 },
   isLoading: false,
   isError: false,
   isEmpty: false,
@@ -30,21 +30,19 @@ function memosReducer(state: MemosState, action: MemosAction): MemosState {
     case 'FETCH_START':
       return { ...state, isLoading: true };
     case 'FETCH_SUCCESS': {
-      const memoInfo = action.payload;
+      const getMemoInfo = action.payload;
       return {
         ...state,
-        memoInfo: memoInfo,
+        memoInfo: getMemoInfo,
         isError: false,
-        // 와 이거 좋다 불러오기를 성공하면 조건식이 True가 되면 불러온 메모가 없는거니까 에러 메시지 띄우고 flase면 isEmpty를 false로 초기화
-        isEmpty: memoInfo.items.length === 0,
+        // 불러오기를 성공하면 조건식이 True가 되면 불러온 메모가 없는거니까 에러 메시지 띄우고 flase면 isEmpty를 false로 초기화
+        isEmpty: getMemoInfo.items.length === 0,
       };
     }
     case 'FETCH_ERROR':
       return { ...state, isError: true };
     case 'FETCH_END':
       return { ...state, isLoading: false };
-
-    // 이 밑에 있는 로직 들은 그냥 memos에 메서드를 돌리는 것이 아니라 이제 memos의 items key를 기준으로 메서드를 돌려야함
     case 'CREATE_MEMO':
       return {
         ...state,
