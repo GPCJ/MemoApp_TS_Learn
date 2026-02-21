@@ -42,3 +42,16 @@ export interface MemoPaginationContext {
   memoInfo: MemoInfo;
   fetchMemos: (params: { page: number; limit: 5 }) => void;
 }
+
+export type EditAction =
+  | { type: 'START_EDIT'; payload: Memo }
+  | { type: 'UPDATE_FIELD'; field: 'title' | 'content'; value: string }
+  | { type: 'SET_VALIDATION_ERROR' }
+  | { type: 'RESET' };
+
+export interface EditState {
+  memoId: number | null;
+  title: string;
+  content: string;
+  isNull: boolean;
+}

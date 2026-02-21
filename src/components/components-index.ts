@@ -1,6 +1,8 @@
 export { default as Header } from './Header';
 export { default as MemoInput } from './Input';
-export { default as MemoList } from './List';
+export { default as MemoList } from './MemoCard';
+export { default as MemoView } from './MemoCardView';
+export { default as MemoEdit } from './MemoCardEdit';
 export { default as Loading } from './Loading';
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as NullMemos } from './NullMemos';

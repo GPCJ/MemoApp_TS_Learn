@@ -10,6 +10,11 @@ import {
 } from './components/components-index';
 import { useSyncMemos } from './hooks/useSyncMemos';
 import './App.css';
+import { createContext } from 'react';
+
+export const Context = createContext<
+  { deleteMemoSync: (id: number) => void } | undefined
+>(undefined);
 
 const MemoMain = () => {
   const { state, createMemoSync, deleteMemoSync, updateMemoSync, fetchMemos } =

@@ -8,9 +8,12 @@ interface PaginationProps {
 function Pagination({ memoInfo, fetchMemos }: PaginationProps) {
   // 페이지네이션 핸들러
   const handlePageChange = (targetPage: number) => {
+    console.log('현재 타겟값:', targetPage);
+    console.log('현재 페이지값:', memoInfo.page);
+
     // 이미 해당 페이지에 있으면 아무것도 하지 않음
     if (targetPage < 1 || targetPage === memoInfo.page) {
-      targetPage = 1;
+      // targetPage = 1;
       return;
     }
 
