@@ -1,23 +1,12 @@
 import { useReducer, useEffect, useCallback } from 'react';
 import { getMemos } from '../api/memos';
-import type { Memo, MemoInfo, MemoSearchParams } from '../types/memo';
+import type {
+  Memo,
+  MemoSearchParams,
+  MemosAction,
+  MemosState,
+} from '../types/memo';
 import { useSearchParams } from 'react-router-dom';
-
-interface MemosState {
-  memoInfo: MemoInfo;
-  isLoading: boolean;
-  isError: boolean;
-  isEmpty: boolean;
-}
-
-type MemosAction =
-  | { type: 'FETCH_START' }
-  | { type: 'FETCH_SUCCESS'; payload: MemoInfo }
-  | { type: 'FETCH_ERROR' }
-  | { type: 'FETCH_END' }
-  | { type: 'CREATE_MEMO'; payload: Memo }
-  | { type: 'DELETE_MEMO'; payload: number }
-  | { type: 'UPDATE_MEMO'; payload: Memo };
 
 const initialState: MemosState = {
   memoInfo: { items: [], page: 1, limit: 5, total: 0, totalPages: 1 },

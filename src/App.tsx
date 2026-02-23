@@ -8,6 +8,7 @@ import {
   EmptyMemos,
   Pagination,
 } from './components/components-index';
+import NotFound from './pages/404';
 import { useSyncMemos } from './hooks/useSyncMemos';
 import './App.css';
 import { createContext } from 'react';
@@ -40,17 +41,12 @@ const MemoMain = () => {
 
         <Routes>
           <Route
-            index
-            element={
-              <Pagination memoInfo={state.memoInfo} fetchMemos={fetchMemos} />
-            }
-          />
-          <Route
             path="/page/1"
             element={
               <Pagination memoInfo={state.memoInfo} fetchMemos={fetchMemos} />
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>

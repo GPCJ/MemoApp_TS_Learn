@@ -31,18 +31,13 @@ export interface MemosResponse {
   total?: number;
 }
 
-export interface MemoSearchParams {
-  page?: number;
-  limit?: number | string;
-  q?: string;
-  fail?: string;
-}
-
+// 페이지네이션 컴포넌트 타입선언
 export interface MemoPaginationContext {
   memoInfo: MemoInfo;
   fetchMemos: (params: { page: number; limit: 5 }) => void;
 }
 
+// 수정모드 컴포넌트 타입선언
 export type EditAction =
   | { type: 'START_EDIT'; payload: Memo }
   | { type: 'UPDATE_FIELD'; field: 'title' | 'content'; value: string }
@@ -54,4 +49,28 @@ export interface EditState {
   title: string;
   content: string;
   isNull: boolean;
+}
+
+// 동기화 훅 타입선언
+export interface MemosState {
+  memoInfo: MemoInfo;
+  isLoading: boolean;
+  isError: boolean;
+  isEmpty: boolean;
+}
+
+export type MemosAction =
+  | { type: 'FETCH_START' }
+  | { type: 'FETCH_SUCCESS'; payload: MemoInfo }
+  | { type: 'FETCH_ERROR' }
+  | { type: 'FETCH_END' }
+  | { type: 'CREATE_MEMO'; payload: Memo }
+  | { type: 'DELETE_MEMO'; payload: number }
+  | { type: 'UPDATE_MEMO'; payload: Memo };
+
+export interface MemoSearchParams {
+  page?: number;
+  limit?: number | string;
+  q?: string;
+  fail?: string;
 }
