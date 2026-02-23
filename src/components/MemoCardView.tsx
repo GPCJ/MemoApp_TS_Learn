@@ -27,8 +27,10 @@ function MemoView({ memo, dispatchEdit, deleteMemoSync }: MemoViewProps) {
         </button>
         <button
           onClick={() => {
-            deleteMemo(memo.id);
-            deleteMemoSync(memo.id);
+            if (window.confirm('정말 삭제하시겠습니까?')) {
+              deleteMemo(memo.id);
+              deleteMemoSync(memo.id);
+            }
           }}
           className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
         >

@@ -10,7 +10,7 @@ export type Memo = {
 export interface MemoInfo {
   items: Memo[];
   page: number;
-  limit: number;
+  limit: number | string;
   total: number;
   totalPages: number;
 }
@@ -33,7 +33,7 @@ export interface MemosResponse {
 
 export interface MemoSearchParams {
   page?: number;
-  limit?: 5;
+  limit?: number | string;
   q?: string;
   fail?: string;
 }

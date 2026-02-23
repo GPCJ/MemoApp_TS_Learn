@@ -8,7 +8,6 @@ interface MemoViewProps {
   editState: EditState;
   deleteMemoSync: (id: number) => void;
   dispatchEdit: React.Dispatch<EditAction>;
-  handleKeyDown: (e: React.KeyboardEvent, memo: Memo) => void;
   handleUpdate: (memoInfo: Memo) => void;
 }
 
@@ -17,10 +16,16 @@ function MemoEdit({
   editState,
   dispatchEdit,
   deleteMemoSync,
-  handleKeyDown,
   handleUpdate,
 }: MemoViewProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const handleKeyDown = (e: React.KeyboardEvent, memo: Memo) => {
+    if (e.key === 'Enter') {
+      handleUpdate(memo);
+    } else if (e.key === 'Escape') {
+      dispatchEdit({ type: 'RESET' });
+    }
+  };
 
   return (
     <>
@@ -74,8 +79,10 @@ function MemoEdit({
         </button>
         <button
           onClick={() => {
-            deleteMemo(memo.id);
-            deleteMemoSync(memo.id);
+            if (window.confirm('정말 삭제하시겠습니까?')) {
+              deleteMemo(memo.id);
+              deleteMemoSync(memo.id);
+            }
           }}
           className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
         >

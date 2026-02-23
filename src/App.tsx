@@ -11,6 +11,7 @@ import {
 import { useSyncMemos } from './hooks/useSyncMemos';
 import './App.css';
 import { createContext } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 export const Context = createContext<
   { deleteMemoSync: (id: number) => void } | undefined
@@ -37,7 +38,20 @@ const MemoMain = () => {
           updateMemoSync={updateMemoSync}
         />
 
-        <Pagination memoInfo={state.memoInfo} fetchMemos={fetchMemos} />
+        <Routes>
+          <Route
+            index
+            element={
+              <Pagination memoInfo={state.memoInfo} fetchMemos={fetchMemos} />
+            }
+          />
+          <Route
+            path="/page/1"
+            element={
+              <Pagination memoInfo={state.memoInfo} fetchMemos={fetchMemos} />
+            }
+          />
+        </Routes>
       </div>
     </div>
   );

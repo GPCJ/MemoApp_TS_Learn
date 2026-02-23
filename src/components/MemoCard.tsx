@@ -45,19 +45,10 @@ function MemoList({ memoInfo, deleteMemoSync, updateMemoSync }: MemoListProps) {
   const [editState, dispatchEdit] = useReducer(editReducer, initialEditState);
   const isEditing = editState.memoId !== null;
 
-  const handleKeyDown = (e: React.KeyboardEvent, memo: Memo) => {
-    if (e.key === 'Enter') {
-      handleUpdate(memo);
-    } else if (e.key === 'Escape') {
-      dispatchEdit({ type: 'RESET' });
-    }
-  };
-
   useEffect(() => {
     console.log('메모 리렌더링');
   });
 
-  // 수정 모드 컴포넌트에 필요
   const handleUpdate = (memoInfo: Memo) => {
     const updateInfo: Memo = {
       ...memoInfo,
@@ -99,7 +90,6 @@ function MemoList({ memoInfo, deleteMemoSync, updateMemoSync }: MemoListProps) {
               dispatchEdit={dispatchEdit}
               deleteMemoSync={deleteMemoSync}
               editState={editState}
-              handleKeyDown={handleKeyDown}
               handleUpdate={handleUpdate}
             />
           ) : (
