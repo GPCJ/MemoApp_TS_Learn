@@ -6,7 +6,6 @@ import type {
   MemosAction,
   MemosState,
 } from '../types/memo';
-import { useSearchParams } from 'react-router-dom';
 
 const initialState: MemosState = {
   memoInfo: { items: [], page: 1, limit: 5, total: 0, totalPages: 1 },
@@ -73,14 +72,6 @@ function memosReducer(state: MemosState, action: MemosAction): MemosState {
 
 export const useSyncMemos = () => {
   const [state, dispatch] = useReducer(memosReducer, initialState);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const handleSearch: (currentPage: number, viewLimit: string) => void = (
-    currentPage,
-    viewLimit,
-  ) => {
-    setSearchParams({ page: currentPage.toString(), limit: viewLimit });
-  };
 
   const fetchMemos = useCallback(async (params?: MemoSearchParams) => {
     try {
@@ -89,7 +80,6 @@ export const useSyncMemos = () => {
       const items = serverMemos;
       console.log('따끈따끈 데이터:', items);
       dispatch({ type: 'FETCH_SUCCESS', payload: items });
-      handleSearch(items.page, items.limit.toString());
     } catch (error) {
       dispatch({ type: 'FETCH_ERROR' });
     } finally {
@@ -98,10 +88,8 @@ export const useSyncMemos = () => {
   }, []);
 
   useEffect(() => {
-    const page = Number(searchParams.get('page')) || 1;
-    const limit = Number(searchParams.get('limit')) || 5;
-    fetchMemos({ page, limit });
-  }, [searchParams]);
+    fetchMemos({ page: 1, limit: 5 });
+  }, []);
 
   const createMemoSync = useCallback((newMemo: Memo) => {
     dispatch({ type: 'CREATE_MEMO', payload: newMemo });

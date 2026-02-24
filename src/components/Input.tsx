@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createMemo } from '../api/memos';
 import type { Memo } from '../types/memo';
+import { Link } from 'react-router-dom';
 
 interface MemoInputProps {
   createMemoSync: (newMemo: Memo) => void;
@@ -70,12 +71,13 @@ function MemoInput({ createMemoSync }: MemoInputProps) {
         placeholder="내용을 입력해주세요."
       />
       <div className="flex justify-end mt-4">
-        <button
+        <Link
+          to={'/'}
           onClick={() => handleMemo(titleMemo, contentMemo)}
           className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
         >
           메모 추가
-        </button>
+        </Link>
       </div>
     </section>
   );

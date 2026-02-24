@@ -3,11 +3,18 @@ import type { MemoInfo } from '../types/memo';
 interface PaginationProps {
   memoInfo: MemoInfo;
   fetchMemos: (params: { page: number; limit: 5 }) => void;
+  // searchParams: { page: string; limit: string };
+  setSearchParams: (params: { page: string; limit: string }) => void;
 }
 
-function Pagination({ memoInfo, fetchMemos }: PaginationProps) {
+function Pagination({
+  memoInfo,
+  fetchMemos,
+  // searchParams,
+  setSearchParams,
+}: PaginationProps) {
   // 페이지네이션 핸들러
-  const handlePageChange = (targetPage: number) => {
+  const handlePageChange = (targetPage: number, viewLimit?: string): void => {
     // 이미 해당 페이지에 있으면 렌더링 및 요청을 보내지 않음
     if (targetPage < 1 || targetPage === memoInfo.page) {
       return;
@@ -20,6 +27,7 @@ function Pagination({ memoInfo, fetchMemos }: PaginationProps) {
     }
 
     fetchMemos({ page: targetPage, limit: 5 });
+    setSearchParams({ page: targetPage.toString(), limit: viewLimit ?? '5' });
   };
 
   return (

@@ -1,6 +1,7 @@
 import { deleteMemo } from '../api/memos';
 import type { Memo, EditAction } from '../types/memo';
 import { formatDate } from '../utils/formatDate';
+import { useNavigate } from 'react-router-dom';
 
 interface MemoViewProps {
   memo: Memo;
@@ -9,6 +10,15 @@ interface MemoViewProps {
 }
 
 function MemoView({ memo, dispatchEdit, deleteMemoSync }: MemoViewProps) {
+  const navigate = useNavigate();
+
+  const handleDelete = (ID: number) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      navigate('/list', { replace: true });
+      deleteMemo(ID);
+      deleteMemoSync(ID);
+    }
+  };
   return (
     <>
       <p className="text-white whitespace-pre-wrap pr-8">제목: {memo.title}</p>
@@ -27,10 +37,7 @@ function MemoView({ memo, dispatchEdit, deleteMemoSync }: MemoViewProps) {
         </button>
         <button
           onClick={() => {
-            if (window.confirm('정말 삭제하시겠습니까?')) {
-              deleteMemo(memo.id);
-              deleteMemoSync(memo.id);
-            }
+            handleDelete(memo.id);
           }}
           className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
         >

@@ -101,6 +101,7 @@ function MemoList({ memoInfo, deleteMemoSync, updateMemoSync }: MemoListProps) {
           )}
         </div>
       ))}
+      <div className="flex justify-center -my-2"></div>
     </section>
   );
 }

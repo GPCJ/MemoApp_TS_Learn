@@ -9,3 +9,4 @@ export { default as NullMemos } from './NullMemos';
 export { default as EmptyMemos } from './NullMemos';
 export { default as SelectMemo } from './SearchMemo';
 export { default as Pagination } from './Pagination';
+export { default as SideNavbar } from './SideNavbar';

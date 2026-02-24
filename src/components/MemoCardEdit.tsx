@@ -1,6 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 import { deleteMemo } from '../api/memos';
 import type { Memo, EditAction, EditState } from '../types/memo';
-import { useRef } from 'react';
 import { formatDate } from '../utils/formatDate';
 
 interface MemoViewProps {
@@ -19,6 +20,15 @@ function MemoEdit({
   handleUpdate,
 }: MemoViewProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  const handleDelete = (ID: number) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      navigate('/list', { replace: true });
+      deleteMemo(ID);
+      deleteMemoSync(ID);
+    }
+  };
   const handleKeyDown = (e: React.KeyboardEvent, memo: Memo) => {
     if (e.key === 'Enter') {
       handleUpdate(memo);
@@ -79,10 +89,7 @@ function MemoEdit({
         </button>
         <button
           onClick={() => {
-            if (window.confirm('정말 삭제하시겠습니까?')) {
-              deleteMemo(memo.id);
-              deleteMemoSync(memo.id);
-            }
+            handleDelete(memo.id);
           }}
           className="text-white hover:bg-red-500 rounded transition-colors text-sm p-2 "
         >
